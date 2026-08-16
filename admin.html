@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Portal - Ali Raza</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='24' font-size='24'>AR</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+    <!-- ===================== LOGIN SCREEN ===================== -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-card">
+            <div class="login-logo">AR</div>
+            <h1>Admin Portal</h1>
+            <p class="login-subtitle">Sign in to manage your portfolio content</p>
+
+            <form id="loginForm" class="login-form">
+                <label for="loginUsername">Username or Email</label>
+                <input type="text" id="loginUsername" name="username" autocomplete="username" required>
+
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" name="password" autocomplete="current-password" required>
+
+                <p id="loginError" class="login-error" role="alert"></p>
+
+                <button type="submit" class="btn btn-primary login-submit">Log In</button>
+            </form>
+
+            <p class="login-hint">
+                Prototype login — default credentials: <code>admin</code> / <code>admin123</code>
+            </p>
+            <p class="login-security-note">
+                ⚠ This is a front-end-only demo. This login does not provide real security —
+                see the Settings section for details.
+            </p>
+        </div>
+    </div>
+
+    <!-- ===================== ADMIN APP ===================== -->
+    <div id="adminApp" class="admin-app" hidden>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span class="sidebar-logo">AR</span>
+                <span class="sidebar-title">Portfolio Admin</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" data-section="dashboard">
+                    <span class="sidebar-icon">▦</span> Dashboard
+                </a>
+                <a href="#" class="sidebar-link" data-section="certificates">
+                    <span class="sidebar-icon">🎓</span> Certificates
+                </a>
+                <a href="#" class="sidebar-link" data-section="skills">
+                    <span class="sidebar-icon">⚙</span> Skills
+                </a>
+                <a href="#" class="sidebar-link" data-section="projects">
+                    <span class="sidebar-icon">▣</span> Projects
+                </a>
+                <a href="#" class="sidebar-link" data-section="education">
+                    <span class="sidebar-icon">🎓</span> Education
+                </a>
+                <a href="#" class="sidebar-link" data-section="settings">
+                    <span class="sidebar-icon">⚒</span> Settings
+                </a>
+            </nav>
+
+            <button class="sidebar-logout" data-action="logout">
+                <span class="sidebar-icon">⏻</span> Logout
+            </button>
+        </aside>
+
+        <!-- Main -->
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <button id="sidebarToggle" class="sidebar-toggle" aria-label="Toggle menu">☰</button>
+                <h2 id="pageTitle">Dashboard</h2>
+                <div class="topbar-right">
+                    <span class="welcome-text">Welcome back, <strong id="welcomeUserName">Ali Raza</strong></span>
+                    <button class="btn btn-small btn-secondary" data-action="logout">Logout</button>
+                </div>
+            </header>
+
+            <main class="admin-content">
+
+                <!-- ===== DASHBOARD ===== -->
+                <section id="section-dashboard" class="admin-section active">
+                    <div class="dashboard-cards">
+                        <div class="dashboard-card">
+                            <p class="dashboard-card-label">Total Certificates</p>
+                            <p class="dashboard-card-value" id="statCertificates">0</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <p class="dashboard-card-label">Total Skills</p>
+                            <p class="dashboard-card-value" id="statSkills">0</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <p class="dashboard-card-label">Total Projects</p>
+                            <p class="dashboard-card-value" id="statProjects">0</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <p class="dashboard-card-label">Education Records</p>
+                            <p class="dashboard-card-value" id="statEducation">0</p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-note">
+                        <p>
+                            This dashboard reflects data stored in this browser's <code>localStorage</code>.
+                            Use the sidebar to manage Certificates, Skills, Projects, and Education records.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- ===== CERTIFICATES ===== -->
+                <section id="section-certificates" class="admin-section">
+                    <div class="section-header">
+                        <p class="section-desc">Manage the certificates shown on your public portfolio and certificates page.</p>
+                        <button id="addCertificateBtn" class="btn btn-primary btn-small">+ Add Certificate</button>
+                    </div>
+                    <div id="certificatesList" class="admin-card-grid"></div>
+                </section>
+
+                <!-- ===== SKILLS ===== -->
+                <section id="section-skills" class="admin-section">
+                    <div class="section-header">
+                        <p class="section-desc">Manage skills grouped by category, as shown on your Skills section.</p>
+                        <button id="addSkillBtn" class="btn btn-primary btn-small">+ Add Skill</button>
+                    </div>
+                    <div id="skillsList" class="skills-admin-list"></div>
+                </section>
+
+                <!-- ===== PROJECTS ===== -->
+                <section id="section-projects" class="admin-section">
+                    <div class="section-header">
+                        <p class="section-desc">Manage the projects shown in your Projects section.</p>
+                        <button id="addProjectBtn" class="btn btn-primary btn-small">+ Add Project</button>
+                    </div>
+                    <div id="projectsList" class="admin-card-grid"></div>
+                </section>
+
+                <!-- ===== EDUCATION ===== -->
+                <section id="section-education" class="admin-section">
+                    <div class="section-header">
+                        <p class="section-desc">Manage your education records shown on the homepage.</p>
+                        <button id="addEducationBtn" class="btn btn-primary btn-small">+ Add Record</button>
+                    </div>
+                    <div id="educationList" class="admin-card-grid"></div>
+                </section>
+
+                <!-- ===== SETTINGS ===== -->
+                <section id="section-settings" class="admin-section">
+                    <div class="settings-grid">
+
+                        <div class="settings-card">
+                            <h3>Login Credentials</h3>
+                            <p class="settings-desc">
+                                Change the username and password used for this prototype login.
+                                These are stored in plain text in this browser's <code>localStorage</code> —
+                                <strong>not secure</strong>, for demo purposes only.
+                            </p>
+                            <form id="credentialsForm" class="settings-form">
+                                <label for="settingsUsername">New Username</label>
+                                <input type="text" id="settingsUsername" required>
+                                <label for="settingsPassword">New Password</label>
+                                <input type="password" id="settingsPassword" required>
+                                <button type="submit" class="btn btn-primary btn-small">Update Credentials</button>
+                            </form>
+                        </div>
+
+                        <div class="settings-card">
+                            <h3>Data Management</h3>
+                            <p class="settings-desc">
+                                Export your current portfolio data as a JSON file, or reset everything
+                                back to the original portfolio content.
+                            </p>
+                            <div class="settings-actions">
+                                <button id="exportDataBtn" class="btn btn-secondary btn-small">Export Data (JSON)</button>
+                                <button id="resetDataBtn" class="btn btn-tertiary btn-small">Reset to Defaults</button>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <h3>About This Prototype</h3>
+                            <p class="settings-desc">
+                                This is a Stage 2A front-end prototype. All data lives in this browser's
+                                <code>localStorage</code> and is not shared across devices or synced to your
+                                live portfolio automatically. See the chat summary for details on what a
+                                production-ready version would need.
+                            </p>
+                        </div>
+
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ===================== MODALS ===================== -->
+
+    <!-- Certificate Modal -->
+    <div id="certModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="certModalTitle">Add Certificate</h3>
+                <button class="modal-close" data-close-modal="certModal">&times;</button>
+            </div>
+            <form id="certForm" class="modal-form">
+                <label for="certTitle">Certificate Title *</label>
+                <input type="text" id="certTitle" required>
+
+                <label for="certOrg">Organization *</label>
+                <input type="text" id="certOrg" required>
+
+                <label for="certDate">Date</label>
+                <input type="text" id="certDate" placeholder="e.g. April 2026 - July 2026">
+
+                <label for="certId">Certificate ID</label>
+                <input type="text" id="certId" placeholder="Optional">
+
+                <label for="certDescription">Description</label>
+                <textarea id="certDescription" rows="3"></textarea>
+
+                <label for="certImage">Image Path</label>
+                <input type="text" id="certImage" placeholder="assets/certificates/your-file.jpg">
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary btn-small" data-close-modal="certModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-small">Save Certificate</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Skill Modal -->
+    <div id="skillModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="skillModalTitle">Add Skill</h3>
+                <button class="modal-close" data-close-modal="skillModal">&times;</button>
+            </div>
+            <form id="skillForm" class="modal-form">
+                <label for="skillName">Skill Name *</label>
+                <input type="text" id="skillName" required>
+
+                <label for="skillCategory">Category *</label>
+                <select id="skillCategory" required></select>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary btn-small" data-close-modal="skillModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-small">Save Skill</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Project Modal -->
+    <div id="projectModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="projectModalTitle">Add Project</h3>
+                <button class="modal-close" data-close-modal="projectModal">&times;</button>
+            </div>
+            <form id="projectForm" class="modal-form">
+                <label for="projectTitle">Project Title *</label>
+                <input type="text" id="projectTitle" required>
+
+                <label for="projectType">Project Type</label>
+                <input type="text" id="projectType" placeholder="e.g. Academic Project">
+
+                <label for="projectDescription">Description *</label>
+                <textarea id="projectDescription" rows="3" required></textarea>
+
+                <label for="projectTech">Technologies (comma-separated)</label>
+                <input type="text" id="projectTech" placeholder="e.g. Java, OOP, Java AWT">
+
+                <label for="projectGithub">GitHub Link</label>
+                <input type="url" id="projectGithub" placeholder="https://github.com/...">
+
+                <label for="projectLive">Live Demo Link</label>
+                <input type="url" id="projectLive" placeholder="https://...">
+
+                <label for="projectImage">Project Image Path</label>
+                <input type="text" id="projectImage" placeholder="Optional">
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary btn-small" data-close-modal="projectModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-small">Save Project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Education Modal -->
+    <div id="eduModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="eduModalTitle">Add Education Record</h3>
+                <button class="modal-close" data-close-modal="eduModal">&times;</button>
+            </div>
+            <form id="eduForm" class="modal-form">
+                <label for="eduDegree">Degree / Qualification *</label>
+                <input type="text" id="eduDegree" required>
+
+                <label for="eduInstitution">Institution *</label>
+                <input type="text" id="eduInstitution" required>
+
+                <label for="eduLocation">Location / Board</label>
+                <input type="text" id="eduLocation" placeholder="e.g. Board: FBISE">
+
+                <label for="eduScore">Score</label>
+                <input type="text" id="eduScore" placeholder="e.g. 91.90% or 3.86 CGPA">
+
+                <label for="eduScoreLabel">Score Label</label>
+                <input type="text" id="eduScoreLabel" placeholder="e.g. After 2 semesters">
+
+                <label for="eduPeriod">Period</label>
+                <input type="text" id="eduPeriod" placeholder="e.g. 2023 - 2025">
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary btn-small" data-close-modal="eduModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-small">Save Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirm Delete Modal -->
+    <div id="confirmModal" class="modal-overlay">
+        <div class="modal modal-small">
+            <div class="modal-header">
+                <h3>Confirm</h3>
+                <button class="modal-close" data-close-modal="confirmModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmDeleteText">Are you sure?</p>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary btn-small" data-close-modal="confirmModal">Cancel</button>
+                <button type="button" id="confirmDeleteBtn" class="btn btn-danger btn-small">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
