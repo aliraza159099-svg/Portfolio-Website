@@ -219,9 +219,6 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.2;
     margin-bottom: 20px;
     animation: fadeInUp 0.8s ease-out;
-}
-
-.hero-title {
     background: linear-gradient(135deg, var(--accent-light) 0%, var(--text-primary) 50%, var(--violet) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -278,6 +275,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ===== BUTTONS ===== */
 .btn {
+    position: relative;
+    overflow: hidden;
     padding: 12px 28px;
     border: none;
     border-radius: 8px;
@@ -285,9 +284,21 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
-    display: inline-block;
-    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
+    box-sizing: border-box;
+}
+
+.btn .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+    transform: scale(0);
+    animation: ripple-effect 0.6s linear;
+    pointer-events: none;
 }
 
 .btn-primary {
@@ -599,7 +610,7 @@ h1, h2, h3, h4, h5, h6 {
 .journey-arrow {
     font-size: 2rem;
     color: var(--accent-light);
-    animation: slideRight 1s ease-in-out infinite;
+    animation: slideRightHorizontal 1s ease-in-out infinite;
 }
 
 @media (max-width: 768px) {
@@ -610,7 +621,7 @@ h1, h2, h3, h4, h5, h6 {
 
     .journey-arrow {
         transform: rotate(90deg);
-        animation: slideDown 1s ease-in-out infinite;
+        animation: slideDownVertical 1s ease-in-out infinite;
     }
 }
 
@@ -873,6 +884,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ===== ANIMATIONS ===== */
+@keyframes ripple-effect {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -937,7 +955,7 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-@keyframes slideRight {
+@keyframes slideRightHorizontal {
     0%, 100% {
         transform: translateX(0);
     }
@@ -946,7 +964,7 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-@keyframes slideDown {
+@keyframes slideDownVertical {
     0%, 100% {
         transform: translateY(0);
     }
