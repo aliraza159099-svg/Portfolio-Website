@@ -8,19 +8,21 @@ function toggleMenu() {
     navMenu.classList.toggle('active');
 }
 
-hamburger.addEventListener('click', toggleMenu);
+if (hamburger) {
+    hamburger.addEventListener('click', toggleMenu);
+}
 
 // Close menu when clicking on a link
 navLinks.forEach(link => {
     link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
+        if (hamburger) hamburger.classList.remove('active');
+        if (navMenu) navMenu.classList.remove('active');
     });
 });
 
 // Close menu when clicking outside
 document.addEventListener('click', (e) => {
-    if (!e.target.closest('.navbar')) {
+    if (navMenu && hamburger && !e.target.closest('.navbar')) {
         hamburger.classList.remove('active');
         navMenu.classList.remove('active');
     }
@@ -37,32 +39,34 @@ viewResultButtons.forEach(button => {
         const imageUrl = button.dataset.image;
         const altText = button.dataset.alt;
         
-        lightboxImage.src = imageUrl;
-        lightboxImage.alt = altText;
-        lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        if (lightboxImage && lightbox) {
+            lightboxImage.src = imageUrl;
+            lightboxImage.alt = altText;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
     });
 });
 
-// Close lightbox
-lightboxClose.addEventListener('click', () => {
-    lightbox.classList.remove('active');
-    document.body.style.overflow = 'auto';
-});
-
-lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) {
+// Close lightbox functions
+const closeLightbox = () => {
+    if (lightbox) {
         lightbox.classList.remove('active');
         document.body.style.overflow = 'auto';
     }
-});
+};
+
+if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+
+if (lightbox) {
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+    });
+}
 
 // Close on Escape key
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        lightbox.classList.remove('active');
-        document.body.style.overflow = 'auto';
-    }
+    if (e.key === 'Escape') closeLightbox();
 });
 
 // ===== SMOOTH SCROLL BEHAVIOR =====
@@ -108,136 +112,21 @@ const highlightNavLink = () => {
     const scrollPos = window.scrollY + 100;
 
     navLinks.forEach(link => {
-        const section = document.querySelector(link.getAttribute('href'));
-        if (section) {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.offsetHeight;
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+            const section = document.querySelector(href);
+            if (section) {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
 
-            if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
-                navLinks.forEach(l => l.style.color = 'var(--text-secondary)');
-                link.style.color = 'var(--accent-light)';
+                if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                    navLinks.forEach(l => l.style.color = 'var(--text-secondary)');
+                    link.style.color = 'var(--accent-light)';
+                }
             }
         }
     });
 };
-
-window.addEventListener('scroll', highlightNavLink);
-
-// ===== PAGE LOAD ANIMATION =====
-window.addEventListener('load', () => {
-    document.body.style.opacity = '1';
-});
-
-// ===== BUTTON RIPPLE EFFECT =====
-const buttons = document.querySelectorAll('.btn');
-
-buttons.forEach(button => {
-    button.addEventListener('click', function (e) {
-        const ripple = document.createElement('span');
-        const rect = this.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = e.clientX - rect.left - size / 2;
-        const y = e.clientY - rect.top - size / 2;
-
-        ripple.style.width = ripple.style.height = size + 'px';
-        ripple.style.left = x + 'px';
-        ripple.style.top = y + 'px';
-        ripple.classList.add('ripple');
-
-        // Remove existing ripple
-        const existing = this.querySelector('.ripple');
-        if (existing) existing.remove();
-
-        this.appendChild(ripple);
-    });
-});
-
-// ===== CURSOR EFFECT (optional enhancement) =====
-const isTouchDevice = () => {
-    return (('ontouchstart' in window) ||
-            (navigator.maxTouchPoints > 0) ||
-            (navigator.msMaxTouchPoints > 0));
-};
-
-if (!isTouchDevice()) {
-    document.addEventListener('mousemove', (e) => {
-        const cursor = document.querySelector('.cursor');
-        if (cursor) {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        }
-    });
-}
-
-// ===== FORM VALIDATION (for future contact form) =====
-function validateEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-// ===== ACCESSIBILITY - FOCUS MANAGEMENT =====
-// Improve keyboard navigation
-document.querySelectorAll('button, a[href], input, textarea').forEach(el => {
-    el.addEventListener('focus', function () {
-        this.style.outline = '2px solid var(--accent-light)';
-        this.style.outlineOffset = '2px';
-    });
-
-    el.addEventListener('blur', function () {
-        this.style.outline = 'none';
-    });
-});
-
-// ===== LAZY LOAD IMAGES =====
-if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src || img.src;
-                img.classList.add('loaded');
-                observer.unobserve(img);
-            }
-        });
-    });
-
-    document.querySelectorAll('img').forEach(img => imageObserver.observe(img));
-}
-
-// ===== HANDLE MISSING CONTACT LINKS =====
-document.addEventListener('DOMContentLoaded', () => {
-    const emailBtn = document.querySelector('.email-btn');
-    const linkedinBtn = document.querySelector('.linkedin-btn');
-    const githubBtn = document.querySelector('.github-btn');
-
-    if (emailBtn && emailBtn.getAttribute('href').includes('your.email')) {
-        emailBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            alert('Please update your email in the HTML file (line with your.email@example.com)');
-        });
-    }
-
-    if (linkedinBtn && linkedinBtn.getAttribute('href').includes('yourprofile')) {
-        linkedinBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            alert('Please update your LinkedIn URL in the HTML file');
-        });
-    }
-
-    if (githubBtn && githubBtn.getAttribute('href').includes('yourprofile')) {
-        githubBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            alert('Please update your GitHub URL in the HTML file');
-        });
-    }
-});
-
-// ===== PREFERS REDUCED MOTION CHECK =====
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-if (prefersReducedMotion) {
-    document.documentElement.style.scrollBehavior = 'auto';
-}
 
 // ===== PERFORMANCE - DEBOUNCE SCROLL EVENTS =====
 function debounce(func, wait) {
@@ -255,4 +144,89 @@ function debounce(func, wait) {
 const debouncedHighlightNavLink = debounce(highlightNavLink, 100);
 window.addEventListener('scroll', debouncedHighlightNavLink);
 
-console.log('Portfolio loaded successfully! 🚀');
+// ===== PAGE LOAD ANIMATION =====
+window.addEventListener('load', () => {
+    document.body.style.opacity = '1';
+});
+
+// ===== BUTTON RIPPLE EFFECT (FIXED) =====
+const buttons = document.querySelectorAll('.btn');
+
+buttons.forEach(button => {
+    button.addEventListener('click', function (e) {
+        // Clean up any existing ripple spans first
+        const existingRipples = this.querySelectorAll('.ripple');
+        existingRipples.forEach(r => r.remove());
+
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+
+        ripple.style.width = ripple.style.height = `${size}px`;
+        ripple.style.left = `${x}px`;
+        ripple.style.top = `${y}px`;
+        ripple.classList.add('ripple');
+
+        this.appendChild(ripple);
+
+        // Auto-remove ripple DOM node after animation finishes
+        setTimeout(() => {
+            ripple.remove();
+        }, 600);
+    });
+});
+
+// ===== CURSOR EFFECT =====
+const isTouchDevice = () => {
+    return (('ontouchstart' in window) ||
+            (navigator.maxTouchPoints > 0) ||
+            (navigator.msMaxTouchPoints > 0));
+};
+
+if (!isTouchDevice()) {
+    document.addEventListener('mousemove', (e) => {
+        const cursor = document.querySelector('.cursor');
+        if (cursor) {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        }
+    });
+}
+
+// ===== ACCESSIBILITY - FOCUS MANAGEMENT =====
+document.querySelectorAll('button, a[href], input, textarea').forEach(el => {
+    el.addEventListener('focus', function () {
+        this.style.outline = '2px solid var(--accent-light)';
+        this.style.outlineOffset = '2px';
+    });
+
+    el.addEventListener('blur', function () {
+        this.style.outline = 'none';
+    });
+});
+
+// ===== LAZY LOAD IMAGES =====
+if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                if (img.dataset.src) img.src = img.dataset.src;
+                img.classList.add('loaded');
+                observer.unobserve(img);
+            }
+        });
+    });
+
+    document.querySelectorAll('img').forEach(img => imageObserver.observe(img));
+}
+
+// ===== PREFERS REDUCED MOTION CHECK =====
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (prefersReducedMotion) {
+    document.documentElement.style.scrollBehavior = 'auto';
+}
+
+console.log('Portfolio script loaded successfully! 🚀');
