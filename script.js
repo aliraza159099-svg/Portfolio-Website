@@ -6,6 +6,8 @@ const navLinks = document.querySelectorAll('.nav-link');
 function toggleMenu() {
     hamburger.classList.toggle('active');
     navMenu.classList.toggle('active');
+    const expanded = hamburger.classList.contains('active');
+    hamburger.setAttribute('aria-expanded', expanded);
 }
 
 if (hamburger) {
@@ -15,7 +17,10 @@ if (hamburger) {
 // Close menu when clicking on a link
 navLinks.forEach(link => {
     link.addEventListener('click', () => {
-        if (hamburger) hamburger.classList.remove('active');
+        if (hamburger) {
+            hamburger.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false');
+        }
         if (navMenu) navMenu.classList.remove('active');
     });
 });
@@ -24,22 +29,24 @@ navLinks.forEach(link => {
 document.addEventListener('click', (e) => {
     if (navMenu && hamburger && !e.target.closest('.navbar')) {
         hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', 'false');
         navMenu.classList.remove('active');
     }
 });
 
 // ===== LIGHTBOX FUNCTIONALITY =====
+// Shared by index.html (.view-result buttons) and certificates.html (.view-certificate buttons)
 const lightbox = document.getElementById('lightbox');
 const lightboxImage = document.querySelector('.lightbox-image');
 const lightboxClose = document.querySelector('.lightbox-close');
-const viewResultButtons = document.querySelectorAll('.view-result');
+const lightboxTriggerButtons = document.querySelectorAll('.view-result, .view-certificate');
 
-viewResultButtons.forEach(button => {
+lightboxTriggerButtons.forEach(button => {
     button.addEventListener('click', () => {
         const imageUrl = button.dataset.image;
-        const altText = button.dataset.alt;
-        
-        if (lightboxImage && lightbox) {
+        const altText = button.dataset.alt || '';
+
+        if (imageUrl && lightboxImage && lightbox) {
             lightboxImage.src = imageUrl;
             lightboxImage.alt = altText;
             lightbox.classList.add('active');
@@ -70,11 +77,15 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ===== SMOOTH SCROLL BEHAVIOR =====
+// Only intercept in-page anchors (href="#id"); ignores bare "#" and cross-page links.
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const href = this.getAttribute('href');
+        if (!href || href === '#') return;
+
+        const target = document.querySelector(href);
         if (target) {
+            e.preventDefault();
             const headerOffset = 70;
             const elementPosition = target.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
@@ -103,7 +114,7 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 // Observe cards and content
-document.querySelectorAll('.skill-category, .project-card, .result-card, .timeline-item').forEach(el => {
+document.querySelectorAll('.skill-category, .project-card, .result-card, .certificate-card, .stat, .timeline-item').forEach(el => {
     observer.observe(el);
 });
 
@@ -149,7 +160,7 @@ window.addEventListener('load', () => {
     document.body.style.opacity = '1';
 });
 
-// ===== BUTTON RIPPLE EFFECT (FIXED) =====
+// ===== BUTTON RIPPLE EFFECT =====
 const buttons = document.querySelectorAll('.btn');
 
 buttons.forEach(button => {

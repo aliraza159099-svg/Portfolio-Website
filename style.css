@@ -45,11 +45,16 @@ img {
     height: auto;
 }
 
+a {
+    -webkit-tap-highlight-color: rgba(34, 211, 238, 0.25);
+}
+
 @media (prefers-reduced-motion: reduce) {
     * {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }
 
@@ -163,11 +168,13 @@ h1, h2, h3, h4, h5, h6 {
     transition: width 0.3s ease;
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.nav-link:focus-visible {
     color: var(--accent-light);
 }
 
-.nav-link:hover::after {
+.nav-link:hover::after,
+.nav-link:focus-visible::after {
     width: 100%;
 }
 
@@ -178,6 +185,7 @@ h1, h2, h3, h4, h5, h6 {
     border: none;
     cursor: pointer;
     gap: 6px;
+    padding: 8px;
 }
 
 .hamburger span {
@@ -199,6 +207,8 @@ h1, h2, h3, h4, h5, h6 {
         text-align: center;
         transition: 0.3s;
         gap: 0;
+        max-height: calc(100vh - 70px);
+        overflow-y: auto;
     }
 
     .nav-menu.active {
@@ -359,10 +369,13 @@ h1, h2, h3, h4, h5, h6 {
 
     .hero-subtitle {
         max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .hero-buttons {
         align-items: center;
+        justify-content: center;
         flex-direction: column;
     }
 
@@ -390,9 +403,15 @@ h1, h2, h3, h4, h5, h6 {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
     transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
     box-sizing: border-box;
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--accent-light);
+    outline-offset: 3px;
 }
 
 .btn .ripple {
@@ -855,6 +874,17 @@ h1, h2, h3, h4, h5, h6 {
     display: inline-block;
 }
 
+.project-links a.tech-link {
+    color: var(--accent-light);
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(34, 211, 238, 0.4);
+}
+
+.project-links a.tech-link:hover {
+    color: var(--violet);
+    border-bottom-color: var(--violet);
+}
+
 .project-team {
     color: var(--text-secondary);
     font-size: 0.95rem;
@@ -961,6 +991,34 @@ h1, h2, h3, h4, h5, h6 {
     flex-wrap: wrap;
     gap: 20px;
     animation: fadeInUp 0.8s ease-out 0.2s backwards;
+}
+
+/* ----- Resume download (sits below Get In Touch) ----- */
+.resume-cta {
+    margin-top: 36px;
+    padding-top: 36px;
+    border-top: 1px solid var(--glass-border);
+    animation: fadeInUp 0.8s ease-out 0.3s backwards;
+}
+
+.resume-cta-label {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+}
+
+.btn-resume {
+    background: rgba(51, 65, 85, 0.6);
+    border: 2px solid var(--success);
+    color: var(--success);
+}
+
+.btn-resume:hover {
+    background: rgba(16, 185, 129, 0.15);
+    transform: translateY(-3px);
 }
 
 /* ===== LIGHTBOX ===== */
@@ -1301,6 +1359,11 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
 }
 
+.certificate-info .btn-small {
+    margin-top: auto;
+    align-self: flex-start;
+}
+
 .future-cert .certificate-info {
     justify-content: center;
     text-align: center;
@@ -1379,6 +1442,10 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .contact-buttons .btn {
+        width: 100%;
+    }
+
+    .resume-cta .btn {
         width: 100%;
     }
 

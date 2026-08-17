@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ali Raza - Resume. Computer Science student, PIEAS.">
+    <meta name="author" content="Ali Raza">
+    <title>Resume - Ali Raza</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='24' font-size='24'>AR</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Self-contained resume styles: intentionally light-themed and print-tuned,
+           independent of the dark portfolio theme, for a clean academic result on paper. */
+        :root {
+            --ink: #1a2233;
+            --ink-soft: #47536b;
+            --ink-faint: #8993a8;
+            --paper: #ffffff;
+            --accent: #1e3a5f;
+            --accent-soft: #3a5a80;
+            --rule: #dde2ea;
+            --rule-soft: #eef1f5;
+            --page-bg: #0f172a;
+            --font-display: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { -webkit-text-size-adjust: 100%; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--page-bg);
+            color: var(--ink);
+            min-height: 100vh;
+        }
+
+        /* ----- On-screen toolbar (hidden when printing) ----- */
+        .resume-toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 24px;
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .resume-toolbar a.back-link {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .resume-toolbar a.back-link:hover { color: #22d3ee; }
+
+        .resume-toolbar-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .toolbar-btn {
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .toolbar-btn.primary {
+            background: linear-gradient(135deg, #22d3ee, #06b6d4);
+            color: #0f172a;
+        }
+
+        .toolbar-btn.primary:hover { filter: brightness(1.08); }
+
+        /* ----- Page wrapper (dark backdrop on screen, gone on print) ----- */
+        .resume-wrapper {
+            padding: 40px 16px 80px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .resume-page {
+            width: 100%;
+            max-width: 210mm;
+            min-height: 297mm;
+            background: var(--paper);
+            color: var(--ink);
+            padding: 18mm 20mm;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        /* ----- Header ----- */
+        .r-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .r-header-main {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            min-width: 0;
+        }
+
+        .r-photo {
+            width: 82px;
+            height: 82px;
+            border-radius: 10px;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 1px solid var(--rule);
+            box-shadow: 0 2px 6px rgba(26, 34, 51, 0.12);
+            background: var(--rule-soft);
+        }
+
+        .r-name {
+            font-family: var(--font-display);
+            font-size: 2.15rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            color: var(--ink);
+            line-height: 1.15;
+        }
+
+        .r-title {
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            color: var(--accent);
+            font-weight: 600;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            margin-top: 6px;
+        }
+
+        .r-location {
+            font-size: 0.8rem;
+            color: var(--ink-faint);
+            margin-top: 4px;
+        }
+
+        .r-contact {
+            text-align: right;
+            font-size: 0.8rem;
+            color: var(--ink-soft);
+            line-height: 1.85;
+            padding-top: 4px;
+        }
+
+        .r-contact a {
+            color: var(--ink-soft);
+            text-decoration: none;
+        }
+
+        .r-contact a:hover { color: var(--accent); }
+
+        .r-rule {
+            height: 2px;
+            background: var(--accent);
+            margin-top: 18px;
+        }
+
+        .r-rule-thin {
+            height: 1px;
+            background: var(--rule);
+            margin-top: 3px;
+            margin-bottom: 22px;
+        }
+
+        /* ----- Sections ----- */
+        .r-section {
+            margin-bottom: 20px;
+        }
+
+        .r-section:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .r-section-title-row {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 11px;
+        }
+
+        .r-section-title {
+            font-family: var(--font-body);
+            font-size: 0.74rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+
+        .r-section-title-row::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--rule);
+        }
+
+        .r-summary {
+            font-size: 0.92rem;
+            color: var(--ink-soft);
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        .r-entry {
+            margin-bottom: 13px;
+        }
+
+        .r-entry:last-child { margin-bottom: 0; }
+
+        .r-entry-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .r-entry-title {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .r-entry-period {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--ink-faint);
+            white-space: nowrap;
+            letter-spacing: 0.2px;
+        }
+
+        .r-entry-sub {
+            font-size: 0.86rem;
+            color: var(--accent-soft);
+            font-weight: 600;
+            font-style: italic;
+            margin-top: 2px;
+        }
+
+        .r-entry-detail {
+            font-size: 0.86rem;
+            color: var(--ink-soft);
+            margin-top: 4px;
+            line-height: 1.6;
+        }
+
+        .r-entry-note {
+            font-size: 0.8rem;
+            color: var(--ink-faint);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .r-entry-link {
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            color: var(--accent);
+            word-break: break-word;
+            margin-top: 5px;
+            display: inline-block;
+            text-decoration: none;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .r-entry-link:hover { border-bottom-color: var(--accent); }
+
+        .r-skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            column-gap: 32px;
+            row-gap: 9px;
+        }
+
+        .r-skill-row {
+            font-size: 0.86rem;
+            line-height: 1.6;
+        }
+
+        .r-skill-cat {
+            display: block;
+            font-weight: 700;
+            color: var(--ink);
+            font-size: 0.72rem;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .r-skill-items {
+            color: var(--ink-soft);
+        }
+
+        .r-achievements {
+            list-style: none;
+            font-size: 0.86rem;
+            color: var(--ink-soft);
+        }
+
+        .r-achievements li {
+            position: relative;
+            padding-left: 17px;
+            margin-bottom: 7px;
+            line-height: 1.55;
+        }
+
+        .r-achievements li:last-child { margin-bottom: 0; }
+
+        .r-achievements li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.55em;
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 1px;
+        }
+
+        .r-footer-note {
+            margin-top: 26px;
+            padding-top: 12px;
+            border-top: 1px solid var(--rule-soft);
+            font-size: 0.68rem;
+            color: var(--ink-faint);
+            text-align: center;
+            letter-spacing: 0.2px;
+        }
+
+        .r-empty-state {
+            font-size: 0.9rem;
+            color: var(--ink-faint);
+            padding: 20px 0;
+        }
+
+        @media (max-width: 720px) {
+            .r-skills-grid { grid-template-columns: 1fr; }
+            .r-header { flex-direction: column; }
+            .r-contact { text-align: left; }
+        }
+
+        @media (max-width: 480px) {
+            .resume-page { padding: 8mm; font-size: 12px; }
+            .r-name { font-size: 1.6rem; }
+            .r-photo { width: 64px; height: 64px; }
+        }
+
+        /* ----- Print: A4, no chrome ----- */
+        @media print {
+            body { background: #ffffff; }
+            .resume-toolbar,
+            .no-print { display: none !important; }
+
+            .resume-wrapper {
+                padding: 0;
+                display: block;
+            }
+
+            .resume-page {
+                box-shadow: none;
+                border-radius: 0;
+                width: 100%;
+                min-height: 0;
+                max-width: none;
+                padding: 0;
+                font-size: 11.5pt;
+            }
+
+            .r-name { font-size: 24pt; }
+
+            a { color: inherit !important; text-decoration: none !important; }
+
+            .r-entry, .r-section { break-inside: avoid; }
+        }
+
+        @page {
+            size: A4;
+            margin: 14mm 16mm;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="resume-toolbar no-print">
+        <a href="index.html" class="back-link">&larr; Back to Portfolio</a>
+        <div class="resume-toolbar-actions">
+            <button type="button" class="toolbar-btn primary" id="print-btn">Download as PDF</button>
+        </div>
+    </div>
+
+    <div class="resume-wrapper">
+        <main class="resume-page" id="resume-root" aria-live="polite">
+            <p class="r-empty-state">Loading resume…</p>
+        </main>
+    </div>
+
+    <script src="resume-data.js"></script>
+    <script>
+        (function () {
+            const root = document.getElementById('resume-root');
+            const printBtn = document.getElementById('print-btn');
+
+            if (printBtn) {
+                printBtn.addEventListener('click', () => window.print());
+            }
+
+            function el(tag, className, html) {
+                const node = document.createElement(tag);
+                if (className) node.className = className;
+                if (html !== undefined) node.innerHTML = html;
+                return node;
+            }
+
+            function escapeHtml(str) {
+                if (str === null || str === undefined) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+            }
+
+            function render(data) {
+                if (!root) return;
+                root.innerHTML = '';
+
+                // Header
+                const header = el('header', 'r-header');
+                const headerMain = el('div', 'r-header-main');
+
+                if (data.photo) {
+                    const photo = document.createElement('img');
+                    photo.src = data.photo;
+                    photo.alt = data.name ? `Photo of ${data.name}` : 'Profile photo';
+                    photo.className = 'r-photo';
+                    // If the image fails to load (e.g. missing asset), remove it quietly
+                    // rather than showing a broken-image icon on the resume.
+                    photo.addEventListener('error', () => photo.remove());
+                    headerMain.appendChild(photo);
+                }
+
+                const nameBlock = el('div');
+                nameBlock.appendChild(el('div', 'r-name', escapeHtml(data.name || '[Information needed]')));
+                if (data.title) nameBlock.appendChild(el('div', 'r-title', escapeHtml(data.title)));
+                if (data.location) nameBlock.appendChild(el('div', 'r-location', escapeHtml(data.location)));
+                headerMain.appendChild(nameBlock);
+                header.appendChild(headerMain);
+
+                const contact = data.contact || {};
+                const contactLines = [];
+                if (contact.email) contactLines.push(`<a href="mailto:${escapeHtml(contact.email)}">${escapeHtml(contact.email)}</a>`);
+                if (contact.linkedin) contactLines.push(`<a href="${escapeHtml(contact.linkedin)}" target="_blank" rel="noopener noreferrer">${escapeHtml(contact.linkedinLabel || contact.linkedin)}</a>`);
+                if (contact.github) contactLines.push(`<a href="${escapeHtml(contact.github)}" target="_blank" rel="noopener noreferrer">${escapeHtml(contact.githubLabel || contact.github)}</a>`);
+                const contactBlock = el('div', 'r-contact', contactLines.join('<br>'));
+                header.appendChild(contactBlock);
+                root.appendChild(header);
+                root.appendChild(el('div', 'r-rule'));
+                root.appendChild(el('div', 'r-rule-thin'));
+
+                function sectionTitle(text) {
+                    const row = el('div', 'r-section-title-row');
+                    row.appendChild(el('span', 'r-section-title', escapeHtml(text)));
+                    return row;
+                }
+
+                // Summary
+                if (data.summary) {
+                    const sec = el('section', 'r-section');
+                    sec.appendChild(sectionTitle('Summary'));
+                    sec.appendChild(el('p', 'r-summary', escapeHtml(data.summary)));
+                    root.appendChild(sec);
+                }
+
+                // Education
+                if (Array.isArray(data.education) && data.education.length) {
+                    const sec = el('section', 'r-section');
+                    sec.appendChild(sectionTitle('Education'));
+                    data.education.forEach(item => {
+                        const entry = el('div', 'r-entry');
+                        const top = el('div', 'r-entry-top');
+                        top.appendChild(el('span', 'r-entry-title', escapeHtml(item.degree)));
+                        if (item.period) top.appendChild(el('span', 'r-entry-period', escapeHtml(item.period)));
+                        entry.appendChild(top);
+                        if (item.institution) entry.appendChild(el('div', 'r-entry-sub', escapeHtml(item.institution)));
+                        if (item.detail) entry.appendChild(el('div', 'r-entry-detail', escapeHtml(item.detail)));
+                        sec.appendChild(entry);
+                    });
+                    root.appendChild(sec);
+                }
+
+                // Skills
+                if (Array.isArray(data.skills) && data.skills.length) {
+                    const sec = el('section', 'r-section');
+                    sec.appendChild(sectionTitle('Technical Skills'));
+                    const grid = el('div', 'r-skills-grid');
+                    data.skills.forEach(group => {
+                        const row = el('div', 'r-skill-row');
+                        row.appendChild(el('span', 'r-skill-cat', escapeHtml(group.category)));
+                        row.appendChild(el('span', 'r-skill-items', escapeHtml((group.items || []).join(', '))));
+                        grid.appendChild(row);
+                    });
+                    sec.appendChild(grid);
+                    root.appendChild(sec);
+                }
+
+                // Projects
+                if (Array.isArray(data.projects) && data.projects.length) {
+                    const sec = el('section', 'r-section');
+                    sec.appendChild(sectionTitle('Projects'));
+                    data.projects.forEach(proj => {
+                        const entry = el('div', 'r-entry');
+                        const top = el('div', 'r-entry-top');
+                        top.appendChild(el('span', 'r-entry-title', escapeHtml(proj.name)));
+                        entry.appendChild(top);
+                        if (proj.meta) entry.appendChild(el('div', 'r-entry-sub', escapeHtml(proj.meta)));
+                        if (proj.description) entry.appendChild(el('div', 'r-entry-detail', escapeHtml(proj.description)));
+                        if (proj.note) entry.appendChild(el('div', 'r-entry-note', escapeHtml(proj.note)));
+                        if (proj.link) {
+                            const a = document.createElement('a');
+                            a.href = proj.link;
+                            a.target = '_blank';
+                            a.rel = 'noopener noreferrer';
+                            a.className = 'r-entry-link';
+                            a.textContent = proj.link.replace(/^https?:\/\//, '');
+                            entry.appendChild(a);
+                        }
+                        sec.appendChild(entry);
+                    });
+                    root.appendChild(sec);
+                }
+
+                // Certifications
+                if (Array.isArray(data.certifications) && data.certifications.length) {
+                    const sec = el('section', 'r-section');
+                    sec.appendChild(sectionTitle('Certifications'));
+                    data.certifications.forEach(cert => {
+                        const entry = el('div', 'r-entry');
+                        const top = el('div', 'r-entry-top');
+                        top.appendChild(el('span', 'r-entry-title', escapeHtml(cert.name)));
+                        if (cert.date) top.appendChild(el('span', 'r-entry-period', escapeHtml(cert.date)));
+                        entry.appendChild(top);
+                        if (cert.org) entry.appendChild(el('div', 'r-entry-sub', escapeHtml(cert.org)));
+                        sec.appendChild(entry);
+                    });
+                    root.appendChild(sec);
+                }
+
+                // Activities
+                if (Array.isArray(data.activities) && data.activities.length) {
+                    const sec = el('section', 'r-section');
+                    sec.appendChild(sectionTitle('Activities & Involvement'));
+                    data.activities.forEach(act => {
+                        const entry = el('div', 'r-entry');
+                        const top = el('div', 'r-entry-top');
+                        top.appendChild(el('span', 'r-entry-title', escapeHtml(act.name)));
+                        if (act.date) top.appendChild(el('span', 'r-entry-period', escapeHtml(act.date)));
+                        entry.appendChild(top);
+                        if (act.org) entry.appendChild(el('div', 'r-entry-sub', escapeHtml(act.org)));
+                        sec.appendChild(entry);
+                    });
+                    root.appendChild(sec);
+                }
+
+                // Achievements
+                if (Array.isArray(data.achievements) && data.achievements.length) {
+                    const sec = el('section', 'r-section');
+                    sec.appendChild(sectionTitle('Achievements'));
+                    const list = el('ul', 'r-achievements');
+                    data.achievements.forEach(a => {
+                        list.appendChild(el('li', null, escapeHtml(a)));
+                    });
+                    sec.appendChild(list);
+                    root.appendChild(sec);
+                }
+
+                root.appendChild(el('div', 'r-footer-note', 'Generated from ali-raza portfolio · Kept in sync via resume-data.js'));
+            }
+
+            if (window.resumeData) {
+                render(window.resumeData);
+            } else if (root) {
+                root.innerHTML = '<p class="r-empty-state">Resume data could not be loaded. Please check that resume-data.js is present.</p>';
+            }
+        })();
+    </script>
+</body>
+</html>
