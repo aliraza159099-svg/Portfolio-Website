@@ -23,7 +23,7 @@ window.resumeData = {
         githubLabel: "github.com/aliraza159099-svg"
     },
 
-    summary: "Computer and Information Sciences student at PIEAS with a 3.86 CGPA, building strong foundations in programming, web development, and Linux while progressing toward Cloud and DevOps engineering. Comfortable across C++, Python, and Java, currently extending into full-stack development with the MERN stack and Linux/Bash systems administration. Long-term goal: working as a Cloud and DevOps engineer in Germany.",
+    summary: "Computer and Information Sciences student at PIEAS with a 3.86 CGPA, building strong foundations in programming, web development, and Linux while progressing toward Cloud and DevOps engineering. Comfortable across C++, Python, and Java, currently extending into full-stack development with the MERN stack and Linux/Bash systems administration. Long-term goal: working as a Cloud and DevOps engineer across globe.",
 
     education: [
         {

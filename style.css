@@ -1263,6 +1263,14 @@ h1, h2, h3, h4, h5, h6 {
     gap: 30px;
     margin-bottom: 80px;
 }
+#ai_button{
+    color:#cbd5e1;
+    font:bold;
+}
+#ai_button:hover {
+    color:#22d3ee;
+    font:bolder;
+}
 
 .certificate-card {
     background: rgba(30, 41, 59, 0.6);
